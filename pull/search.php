@@ -25,13 +25,12 @@ class EbaySearch extends Search {
   }
 
   protected function createUrl($query, $category, $sort) {
-    $app_id = "YOUR EBAY APP ID HERE";
-    $affiliate_id = "YOUR EBAY AFFILIATE ID HERE";
-    $url = "http://svcs.ebay.com/services/search/FindingService/v1?";
+    include "pull/env.php";
+    $url = "https://svcs.ebay.com/services/search/FindingService/v1?";
     $url .= "OPERATION-NAME=findItemsAdvanced";
     $url .= "&RESPONSE-DATA-FORMAT=JSON";
     $url .= "&SERVICE-VERSION=1.0.0";
-    $url .= "&SECURITY-APPNAME=$app_id";
+    $url .= "&SECURITY-APPNAME=$ebay_app_id";
     $url .= "&GLOBAL-ID=EBAY-US";
     if (isset($query)) {
     	$url .= "&keywords=$query";
@@ -45,7 +44,7 @@ class EbaySearch extends Search {
     $url .= "&paginationInput.entriesPerPage=12";
     $url .= "&paginationInput.pageNumber=$this->page";
     $url .= "&outputSelector=PictureURLLarge";
-    $url .= "&affiliate.trackingId=$affiliate_id";
+    $url .= "&affiliate.trackingId=$ebay_affiliate_id";
     $url .= "&affiliate.networkId=9";
     return $url;
   }
@@ -109,9 +108,9 @@ class WalmartSearch extends Search {
 
   protected function createUrl($safe_query, $category, $sort) {
     $start = (($this->page - 1) * 12) + 1;
-    $app_id = "YOUR WALMART APP ID HERE";
+    include("pull/env.php");
     $url = "https://api.walmartlabs.com/v1/search?";
-    $url .= "apiKey=$app_id";
+    $url .= "apiKey=$walmart_app_id";
     if (isset($safe_query) && !empty($safe_query)) {
     	$url .= "&query=$safe_query";
     } else {
