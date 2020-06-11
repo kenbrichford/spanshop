@@ -27,7 +27,7 @@
 			<div id="headwrap">
 				<a href="/"><img id="headimgtwo" class="prescroll" src="./media/spanshopnamesmall.png"></a>
 				<div id="menubutton"></div>
-				<form method="get" action="/" id="searchform" class='searchtwo'>
+				<form method="get" action="" id="searchform" class='searchtwo'>
 					<input id="searchbar" type="search" name="q"
 					<?php if(isset($_GET["q"])) {
 							echo 'value="'.htmlentities($_GET["q"]).'" placeholder="Your Wares. Your Way."';
