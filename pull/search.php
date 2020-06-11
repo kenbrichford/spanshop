@@ -133,40 +133,41 @@ class WalmartSearch extends Search {
     global $total_results;
     $results = array();
     if ($response->totalResults == 0) {
-    	$total_results["Walmart"] = (string)$response->numItems;
+      $total_results["Walmart"] = (string)$response->numItems;
     } else {
       $total_results["Walmart"] = (string)$response->totalResults;
-    }
-    foreach ($response->items as $item) {
-    	$picture = $item->largeImage;
-      if (isset($item->salePrice)) {
-        $price_string = $item->salePrice;
-      	$price = convertPriceString($price_string);
-        if (isset($item->standardShipRate) && $item->standardShipRate != "0.0") {
-          $shipping_string = $item->standardShipRate;
-          $shipping_cost = convertPriceString($shipping_string);
-      		$shipping = " + $shipping_cost Shipping";
-      	} else {
-      		$shipping = " + Free Shipping";
-      	}
-      } else {
-        $price = "Click for pricing";
+      foreach ($response->items as $item) {
+        $picture = $item->largeImage;
+        if (isset($item->salePrice)) {
+          $price_string = $item->salePrice;
+          $price = convertPriceString($price_string);
+          if (isset($item->standardShipRate) && $item->standardShipRate != "0.0") {
+            $shipping_string = $item->standardShipRate;
+            $shipping_cost = convertPriceString($shipping_string);
+            $shipping = " + $shipping_cost Shipping";
+          } else {
+            $shipping = " + Free Shipping";
+          }
+        } else {
+          $price = "Click for pricing";
+        }
+        $link = str_replace("/|PUBID|", "", $item->productUrl);
+        $title = $item->name;
+        $category = explode("/", $item->categoryPath)[0];
+        $result_array = array(
+          "link" => $link,
+          "picture" => $picture,
+          "title" => $title,
+          "category" => $category,
+          "condition" => "New",
+          "price" => $price,
+          "shipping" => $shipping,
+          "market" => "walmart"
+        );
+        array_push($results, $result_array);
       }
-    	$link = str_replace("/|PUBID|", "", $item->productUrl);
-    	$title = $item->name;
-    	$category = explode("/", $item->categoryPath)[0];
-    	$result_array = array(
-        "link" => $link,
-        "picture" => $picture,
-        "title" => $title,
-        "category" => $category,
-        "condition" => "New",
-        "price" => $price,
-        "shipping" => $shipping,
-        "market" => "walmart"
-      );
-      array_push($results, $result_array);
     }
+    
     return $results;
   }
 }
